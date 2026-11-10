@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixora - Photo to PDF Converter</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Arial,sans-serif;
+  background:#f6f5ff;color:#24213b;
+}
+header{
+  background:white;padding:20px 7%;
+  display:flex;justify-content:space-between;
+  align-items:center;box-shadow:0 3px 20px #00000008;
+}
+.logo{font-size:25px;font-weight:800;color:#6846e8}
+.logo span{color:#24213b}
+nav a{margin-left:20px;text-decoration:none;color:#555;font-size:14px}
+.hero{text-align:center;padding:65px 20px 35px}
+.tag{
+  display:inline-block;background:#eeeaff;color:#6846e8;
+  padding:9px 17px;border-radius:30px;font-size:13px;
+}
+h1{font-size:clamp(32px,6vw,52px);margin:22px 0 14px}
+h1 span{color:#7049ed}
+.hero p{color:#777;line-height:1.7}
+.container{
+  max-width:760px;margin:25px auto 60px;
+  padding:0 18px;
+}
+.card{
+  background:white;padding:30px;border-radius:22px;
+  box-shadow:0 12px 40px #4532a012;
+}
+.upload{
+  border:2px dashed #b9a9f7;background:#faf9ff;
+  padding:45px 15px;text-align:center;
+  border-radius:17px;cursor:pointer;
+}
+.upload:hover{background:#f2efff}
+.upload .icon{font-size:45px}
+.upload h3{margin:15px 0 8px}
+.upload p{font-size:13px;color:#888}
+input[type=file]{display:none}
+button{
+  border:0;border-radius:12px;padding:15px 22px;
+  font-size:15px;font-weight:bold;cursor:pointer;
+}
+.primary{
+  background:linear-gradient(120deg,#7955f5,#5735d5);
+  color:white;width:100%;margin-top:22px;
+  box-shadow:0 8px 20px #7049ed35;
+}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.secondary{background:#eeeaff;color:#6846e8}
+#preview{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+  gap:12px;margin-top:20px;
+}
+.photo{position:relative}
+.photo img{
+  width:100%;height:110px;object-fit:cover;
+  border-radius:10px;border:1px solid #eee;
+}
+.photo button{
+  position:absolute;right:5px;top:5px;
+  padding:5px 8px;background:#e84454;color:white;
+}
+#status{text-align:center;margin-top:15px;color:#6846e8;font-size:14px}
+.ad{
+  margin:25px 0;padding:20px;text-align:center;
+  background:#fff;border:1px dashed #ddd;border-radius:12px;
+  color:#aaa;font-size:12px;
+}
+.features{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:15px;margin-top:25px;
+}
+.feature{
+  background:white;padding:20px 12px;border-radius:15px;
+  text-align:center;box-shadow:0 5px 20px #00000006;
+}
+.feature b{display:block;margin:10px 0;font-size:14px}
+.feature small{color:#888;font-size:12px}
+footer{
+  background:#211c39;color:#ddd;text-align:center;
+  padding:35px 15px;line-height:2;font-size:13px;
+}
+footer a{color:#c5b8ff;margin:0 8px}
+@media(max-width:600px){
+  nav a{margin-left:9px;font-size:12px}
+  .card{padding:18px}
+  .features{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">PIX<span>ORA</span></div>
+  <nav>
+    <a href="#converter">Converter</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="tag">✦ FREE ONLINE PDF TOOL</div>
+  <h1>Photos to <span>PDF</span><br>Made Simple.</h1>
+  <p>Convert your images into high-quality PDF files in seconds.<br>
+  Fast, secure and easy to use.</p>
+</section>
+
+<main class="container" id="converter">
+
+  <div class="card">
+    <div class="upload" onclick="document.getElementById('files').click()">
+      <div class="icon">📸</div>
+      <h3>Upload Your Photos</h3>
+      <p>Tap here to select multiple images</p>
+      <p style="margin-top:10px">JPG, JPEG, PNG supported</p>
+    </div>
+
+    <input type="file" id="files" accept="image/jpeg,image/png,image/webp" multiple>
+
+    <div id="preview"></div>
+
+    <button class="primary" id="convert" disabled onclick="makePDF()">
+      Convert & Download PDF →
+    </button>
+    <div id="status"></div>
+  </div>
+
+  <div class="ad">
+    Advertisement
+    <!-- Add your approved Google AdSense ad code here -->
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <div>⚡</div><b>Fast Conversion</b>
+      <small>Convert in seconds</small>
+    </div>
+    <div class="feature">
+      <div>🔒</div><b>Private & Secure</b>
+      <small>Images processed in browser</small>
+    </div>
+    <div class="feature">
+      <div>📄</div><b>Easy Download</b>
+      <small>Get your PDF instantly</small>
+    </div>
+  </div>
+
+</main>
+
+<section class="container" id="about">
+  <div class="card">
+    <h2>How to Convert Photos to PDF?</h2>
+    <p style="color:#777;line-height:1.8;margin-top:12px">
+      1. Select one or more photos from your device.<br>
+      2. Preview your selected photos.<br>
+      3. Click Convert & Download PDF.<br>
+      4. Your PDF file will be downloaded automatically.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <h2 style="color:white">PIXORA</h2>
+  <p>Simple tools for everyday tasks.</p>
+  <p>
+    <a href="#privacy">Privacy Policy</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </p>
+  <p id="privacy">Privacy: Photos are processed in your browser and are not uploaded to our server by this tool.</p>
+  <p id="disclaimer">Disclaimer: This website is provided as a free utility tool.</p>
+  <p>© 2026 Pixora. All rights reserved.</p>
+</footer>
+
+<script>
+const input = document.getElementById("files");
+const preview = document.getElementById("preview");
+const convert = document.getElementById("convert");
+const status = document.getElementById("status");
+
+let photos = [];
+
+input.addEventListener("change", function(){
+  const selected = Array.from(this.files);
+  const valid = selected.filter(file =>
+    ["image/jpeg","image/png","image/webp"].includes(file.type)
+  );
+
+  photos = [...photos, ...valid];
+  showPreview();
+  this.value = "";
+});
+
+function showPreview(){
+  preview.innerHTML = "";
+
+  photos.forEach((file,index)=>{
+    const url = URL.createObjectURL(file);
+    const div = document.createElement("div");
+    div.className = "photo";
+
+    const img = document.createElement("img");
+    img.src = url;
+
+    const remove = document.createElement("button");
+    remove.textContent = "×";
+    remove.type = "button";
+    remove.onclick = ()=>{
+      photos.splice(index,1);
+      showPreview();
+    };
+
+    div.appendChild(img);
+    div.appendChild(remove);
+    preview.appendChild(div);
+  });
+
+  convert.disabled = photos.length === 0;
+  status.textContent = photos.length
+    ? photos.length + " photo(s) selected"
+    : "";
+}
+
+async function makePDF(){
+  if(!photos.length) return;
+
+  convert.disabled = true;
+  status.textContent = "Creating your PDF...";
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p","mm","a4");
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 10;
+
+    for(let i=0;i<photos.length;i++){
+      const file = photos[i];
+      const data = await readImage(file);
+
+      const img = new Image();
+      img.src = data;
+      await new Promise((resolve,reject)=>{
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+
+      if(i>0) pdf.addPage();
+
+      const ratio = Math.min(
+        (pageWidth-margin*2)/img.width,
+        (pageHeight-margin*2)/img.height
+      );
+
+      const width = img.width*ratio;
+      const height = img.height*ratio;
+      const x = (pageWidth-width)/2;
+      const y = (pageHeight-height)/2;
+
+      pdf.addImage(data,"JPEG",x,y,width,height);
+    }
+
+    pdf.save("Pixora-Photos.pdf");
+    status.textContent = "Your PDF is ready!";
+  }catch(error){
+    console.error(error);
+    status.textContent = "Something went wrong. Please try again.";
+  }finally{
+    convert.disabled = photos.length === 0;
+  }
+}
+
+function readImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=>resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+</script>
+
+</body>
+</html>
